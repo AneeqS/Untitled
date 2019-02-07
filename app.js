@@ -12,6 +12,11 @@ app.get("/", (req, res) =>{
     res.send("Welcome To Home Page");
 });
 
+app.get("*", (req, res) =>{
+   console.log("Request was made for non defined route");
+   res.sendStatus(404);
+});
+
 app.listen(port, () =>{
    console.log("Server Started");
 });
