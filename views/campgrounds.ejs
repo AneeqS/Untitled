@@ -3,9 +3,10 @@
 <h1>Campgrounds Page!!!!</h1>
 
 <% campgrounds.forEach(function(campgrounds){ %>
-    <li>
-        <%= campgrounds.name %>
-    </li>
+    <div>
+        <h4> <%= campgrounds.name %> </h4>
+        <img src= <%= campgrounds.image%> >
+    </div>
 <%})%>
 
 <% include partials/footer %>
