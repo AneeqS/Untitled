@@ -14,6 +14,11 @@ app.get("/", (req, res) =>{
     res.render("landing");
 });
 
+app.get("/campgrounds", (req, res) =>{
+    console.log("Request was made for the Campgrounds Route");
+res.render("campgrounds");
+});
+
 app.get("*", (req, res) =>{
    console.log("Request was made for non defined route");
    res.sendStatus(404);
