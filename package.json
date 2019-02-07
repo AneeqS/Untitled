@@ -1,0 +1,19 @@
+{
+  "name": "untitledcampapp",
+  "version": "1.0.0",
+  "description": "camp sites",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AneeqS/Untitled.git"
+  },
+  "author": "Anneq Shah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AneeqS/Untitled/issues"
+  },
+  "homepage": "https://github.com/AneeqS/Untitled#readme"
+}
