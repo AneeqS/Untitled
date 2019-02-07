@@ -28,7 +28,7 @@ app.get("/", (req, res) =>{
 
 app.get("/campgrounds", (req, res) =>{
     console.log("Request was made for the Campgrounds Route");
-res.render("campgrounds");
+res.render("campgrounds", {campgrounds: campgrounds});
 });
 
 app.get("*", (req, res) =>{
