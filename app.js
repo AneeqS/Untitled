@@ -8,6 +8,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
+var campgrounds = [
+    {name: "A", image: ""},
+    {name: "B", image: ""},
+    {name: "C", image: ""},
+    {name: "D", image: ""},
+    {name: "E", image: ""},
+    {name: "F", image: ""},
+    {name: "G", image: ""},
+    {name: "H", image: ""},
+    {name: "I", image: ""},
+    {name: "J", image: ""}
+];
 
 app.get("/", (req, res) =>{
     console.log("Request was made for the ROOT Route");
