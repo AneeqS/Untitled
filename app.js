@@ -5,12 +5,13 @@ var bodyParser = require("body-parser");
 var port = 3000;
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 
 app.get("/", (req, res) =>{
     console.log("Request was made for the ROOT Route");
-    res.send("Welcome To Home Page");
+    res.render("landing");
 });
 
 app.get("*", (req, res) =>{
