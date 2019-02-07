@@ -6,6 +6,12 @@ var port = 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
+
+app.get("/", (req, res) =>{
+    console.log("Request was made for the ROOT Route");
+    res.send("Welcome To Home Page");
+});
+
 app.listen(port, () =>{
    console.log("Server Started");
 });
