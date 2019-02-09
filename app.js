@@ -1,9 +1,11 @@
-var express =  require("express");
-var ejs =  require("ejs");
-var app = express();
-var bodyParser = require("body-parser");
-var port = 3000;
+var express =  require("express"),
+    app = express(),
+    ejs =  require("ejs"),
+    bodyParser = require("body-parser"),
+    mongoose = require("mongoose"),
+    port = 3000;
 
+mongoose.connect("mongodb://localhost:" + port + "/untitled");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
