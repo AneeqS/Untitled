@@ -44,7 +44,8 @@ app.post("/campgrounds", (req, res) =>{
         image: req.body.image
     };
     console.log(newCamp);
-
+    campgrounds.push(newCamp);
+    res.redirect("/campgrounds");
 });
 
 app.get("*", (req, res) =>{
