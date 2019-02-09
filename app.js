@@ -27,8 +27,12 @@ app.get("/", (req, res) =>{
 });
 
 app.get("/campgrounds", (req, res) =>{
-    console.log("Request was made for the Campgrounds Route");
+    console.log("Request was made for the GET Campgrounds Route");
 res.render("campgrounds", {campgrounds: campgrounds});
+});
+
+app.post("/campgrounds", (req, res) =>{
+    console.log("Request was made for the POST Campgrounds Route");
 });
 
 app.get("*", (req, res) =>{
