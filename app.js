@@ -28,11 +28,23 @@ app.get("/", (req, res) =>{
 
 app.get("/campgrounds", (req, res) =>{
     console.log("Request was made for the GET Campgrounds Route");
-res.render("campgrounds", {campgrounds: campgrounds});
+
+    res.render("campgrounds", {campgrounds: campgrounds});
+});
+
+app.get("/campgrounds/new", (req, res) =>{
+    console.log("Request was made for the NEW Campgrounds Route");
+    res.render("new");
 });
 
 app.post("/campgrounds", (req, res) =>{
     console.log("Request was made for the POST Campgrounds Route");
+    var newCamp = {
+        name: req.body.name,
+        image: req.body.image
+    };
+    console.log(newCamp);
+
 });
 
 app.get("*", (req, res) =>{
