@@ -47,7 +47,7 @@ app.get("/campgrounds", (req, res) =>{
 
     Campground.find({}, function(err, campgrounds){
         if(err){
-            console.log("Error");
+            console.log(err);
         }else{
             res.render("index", {campgrounds: campgrounds});
         }
@@ -65,11 +65,12 @@ app.post("/campgrounds", (req, res) =>{
     console.log("Request was made for the CREATE Route");
     var newCamp = {
         name: req.body.name,
-        image: req.body.image
+        image: req.body.image,
+        description: req.body.description
     };
     Campground.create(newCamp, function (err, campground){
         if(err){
-            console.log("Error");
+            console.log(err);
         }else {
             res.redirect("/campgrounds");
         }
@@ -78,8 +79,16 @@ app.post("/campgrounds", (req, res) =>{
 
 //SHOW
 app.get("/campgrounds/:id", (req, res){
+
     console.log("Request was made for the SHOW Route");
-    res.render("show");
+    Campground.findById(req.params.id, function (err, foundCamp){
+       if(err){
+           console.log(err);
+       }else {
+           console.log("Found");
+           res.render("show", {campground: foundCamp});
+       }
+    });
 })
 
 app.get("*", (req, res) =>{
