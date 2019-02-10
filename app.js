@@ -19,58 +19,66 @@ var campgroundSchema = new mongoose.Schema({
 
 var Campground = mongoose.model("Campground", campgroundSchema);
 
-Campground.create(
-    {
-        name: "A",
-        image: ""
-    }, function(err, campground){
-    if(err){
-        console.log(err);
-    }else {
-        console.log("Saved");
-        console.log(campground);
-    }
-});
+// Campground.create(
+//     {
+//         name: "A",
+//         image: ""
+//     }, function(err, campground){
+//     if(err){
+//         console.log(err);
+//     }else {
+//         console.log("Saved");
+//         console.log(campground);
+//     }
+// });
 
-var campgrounds = [
-    {name: "A", image: ""},
-    {name: "B", image: ""},
-    {name: "C", image: ""},
-    {name: "D", image: ""},
-    {name: "E", image: ""},
-    {name: "F", image: ""},
-    {name: "G", image: ""},
-    {name: "H", image: ""},
-    {name: "I", image: ""},
-    {name: "J", image: ""}
-];
+
 
 app.get("/", (req, res) =>{
     console.log("Request was made for the ROOT Route");
     res.render("landing");
 });
 
-app.get("/campgrounds", (req, res) =>{
-    console.log("Request was made for the GET Campgrounds Route");
 
-    res.render("campgrounds", {campgrounds: campgrounds});
+//INDEX
+app.get("/campgrounds", (req, res) =>{
+    console.log("Request was made for the INDEX Route");
+
+    Campground.find({}, function(err, campgrounds){
+        if(err){
+            console.log("Error");
+        }else{
+            res.render("campgrounds", {campgrounds: campgrounds});
+        }
+    });
 });
 
+//NEW
 app.get("/campgrounds/new", (req, res) =>{
-    console.log("Request was made for the NEW Campgrounds Route");
+    console.log("Request was made for the NEW Route");
     res.render("new");
 });
 
+//CREATE
 app.post("/campgrounds", (req, res) =>{
-    console.log("Request was made for the POST Campgrounds Route");
+    console.log("Request was made for the CREATE Route");
     var newCamp = {
         name: req.body.name,
         image: req.body.image
     };
-    console.log(newCamp);
-    campgrounds.push(newCamp);
-    res.redirect("/campgrounds");
+    Campground.create(newCamp, function (err, campground){
+        if(err){
+            console.log("Error");
+        }else {
+            res.redirect("/campgrounds");
+        }
+    });
 });
+
+//SHOW
+app.get("/campgrounds/:id", (req, res){
+    console.log("Request was made for the SHOW Route");
+})
 
 app.get("*", (req, res) =>{
    console.log("Request was made for non defined route");
