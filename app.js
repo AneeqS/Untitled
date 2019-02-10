@@ -5,7 +5,7 @@ var express =  require("express"),
     mongoose = require("mongoose"),
     port = 3000;
 
-mongoose.connect("mongodb://localhost:" + port + "/untitled");
+mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -18,6 +18,19 @@ var campgroundSchema = new mongoose.Schema({
 });
 
 var Campground = mongoose.model("Campground", campgroundSchema);
+
+Campground.create(
+    {
+        name: "A",
+        image: ""
+    }, function(err, campground){
+    if(err){
+        console.log(err);
+    }else {
+        console.log("Saved");
+        console.log(campground);
+    }
+});
 
 var campgrounds = [
     {name: "A", image: ""},
@@ -63,6 +76,8 @@ app.get("*", (req, res) =>{
    console.log("Request was made for non defined route");
    res.sendStatus(404);
 });
+
+
 
 app.listen(port, () =>{
    console.log("Server Started");
