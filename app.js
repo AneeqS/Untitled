@@ -79,6 +79,7 @@ app.post("/campgrounds", (req, res) =>{
 //SHOW
 app.get("/campgrounds/:id", (req, res){
     console.log("Request was made for the SHOW Route");
+    res.render("show");
 })
 
 app.get("*", (req, res) =>{
