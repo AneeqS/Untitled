@@ -7,11 +7,11 @@ let express =  require("express"),
     Campground = require("./models/campground"),
     seedDb = require("./seeds");
 
-seedDb();
 mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+seedDb();
 
 
 
