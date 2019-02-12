@@ -3,22 +3,15 @@ let express =  require("express"),
     ejs =  require("ejs"),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
-    port = 3000;
+    port = 3000,
+    Campground = require("./models/campground");
 
 mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
-//Schema
 
-let campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-
-let Campground = mongoose.model("Campground", campgroundSchema);
 
 // Campground.create(
 //     {
@@ -63,7 +56,7 @@ app.get("/campgrounds/new", (req, res) =>{
 //CREATE
 app.post("/campgrounds", (req, res) =>{
     console.log("Request was made for the CREATE Route");
-    var newCamp = {
+    let newCamp = {
         name: req.body.name,
         image: req.body.image,
         description: req.body.description
