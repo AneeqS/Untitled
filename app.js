@@ -1,4 +1,4 @@
-var express =  require("express"),
+let express =  require("express"),
     app = express(),
     ejs =  require("ejs"),
     bodyParser = require("body-parser"),
@@ -12,13 +12,13 @@ app.set("view engine", "ejs");
 
 //Schema
 
-var campgroundSchema = new mongoose.Schema({
+let campgroundSchema = new mongoose.Schema({
     name: String,
     image: String,
     description: String
 });
 
-var Campground = mongoose.model("Campground", campgroundSchema);
+let Campground = mongoose.model("Campground", campgroundSchema);
 
 // Campground.create(
 //     {
@@ -78,7 +78,7 @@ app.post("/campgrounds", (req, res) =>{
 });
 
 //SHOW
-app.get("/campgrounds/:id", (req, res){
+app.get("/campgrounds/:id", (req, res) => {
 
     console.log("Request was made for the SHOW Route");
     Campground.findById(req.params.id, function (err, foundCamp){
@@ -89,7 +89,7 @@ app.get("/campgrounds/:id", (req, res){
            res.render("show", {campground: foundCamp});
        }
     });
-})
+});
 
 app.get("*", (req, res) =>{
    console.log("Request was made for non defined route");
