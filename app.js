@@ -15,21 +15,6 @@ app.set("view engine", "ejs");
 
 
 
-// Campground.create(
-//     {
-//         name: "A",
-//         image: ""
-//     }, function(err, campground){
-//     if(err){
-//         console.log(err);
-//     }else {
-//         console.log("Saved");
-//         console.log(campground);
-//     }
-// });
-
-
-
 app.get("/", (req, res) =>{
     console.log("Request was made for the ROOT Route");
     res.render("landing");
@@ -76,7 +61,7 @@ app.post("/campgrounds", (req, res) =>{
 app.get("/campgrounds/:id", (req, res) => {
 
     console.log("Request was made for the SHOW Route");
-    Campground.findById(req.params.id, function (err, foundCamp){
+    Campground.findById(req.params.id).populate("comments").exec(function (err, foundCamp){
        if(err){
            console.log(err);
        }else {
