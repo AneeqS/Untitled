@@ -29,7 +29,7 @@ app.get("/campgrounds", (req, res) =>{
         if(err){
             console.log(err);
         }else{
-            res.render("index", {campgrounds: campgrounds});
+            res.render("campgrounds/index", {campgrounds: campgrounds});
         }
     });
 });
@@ -37,7 +37,7 @@ app.get("/campgrounds", (req, res) =>{
 //NEW
 app.get("/campgrounds/new", (req, res) =>{
     console.log("Request was made for the NEW Route");
-    res.render("new");
+    res.render("campgrounds/new");
 });
 
 //CREATE
@@ -66,9 +66,15 @@ app.get("/campgrounds/:id", (req, res) => {
            console.log(err);
        }else {
            console.log("Found");
-           res.render("show", {campground: foundCamp});
+           res.render("campgrounds/show", {campground: foundCamp});
        }
     });
+});
+
+//Comment Routes
+
+app.get("/campgrounds/:id/comments/new", (req, res) => {
+    res.render("comments/new");
 });
 
 app.get("*", (req, res) =>{
