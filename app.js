@@ -4,8 +4,10 @@ let express =  require("express"),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
     port = 3000,
-    Campground = require("./models/campground");
+    Campground = require("./models/campground"),
+    seedDb = require("./seeds");
 
+seedDb();
 mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
