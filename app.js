@@ -5,6 +5,7 @@ let express =  require("express"),
     mongoose = require("mongoose"),
     port = 3000,
     Campground = require("./models/campground"),
+    Comment = require("./models/comment"),
     seedDb = require("./seeds");
 
 mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
@@ -83,6 +84,25 @@ app.get("/campgrounds/:id/comments/new", (req, res) => {
 
        }
     });
+});
+
+app.post("/campgrounds/:id/comments", (req, res) => {
+   Campground.findById(req.params.id, function(err, campground){
+      if(err){
+          console.log(err);
+          res.redirect("/campgrounds");
+      }else{
+          Comment.create(req.body.comment, function (err, comment){
+              if(err){
+                  console.log(err);
+              }else{
+                  campground.comments.push(comment);
+                  campground.save();
+                  res.redirect("/campgrounds/" + campground._id);
+              }
+          });
+      }
+   });
 });
 
 app.get("*", (req, res) =>{
