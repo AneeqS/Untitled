@@ -3,9 +3,12 @@ let express =  require("express"),
     ejs =  require("ejs"),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
+    passport = require("passport"),
+    LocalStrategy = require("passport-local"),
     port = 3000,
     Campground = require("./models/campground"),
     Comment = require("./models/comment"),
+    User = require("./models/user"),
     seedDb = require("./seeds");
 
 mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
