@@ -30,6 +30,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use((req, res, next) => {
+   res.locals.currentUser = req.user;
+   next();
+});
+
 
 app.get("/", (req, res) =>{
     console.log("Request was made for the ROOT Route");
@@ -45,7 +50,7 @@ app.get("/campgrounds", (req, res) =>{
         if(err){
             console.log(err);
         }else{
-            res.render("campgrounds/index", {campgrounds: campgrounds});
+            res.render("campgrounds/index", {campgrounds: campgrounds, currentUser: req.user});
         }
     });
 });
