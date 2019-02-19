@@ -124,6 +124,8 @@ app.post("/campgrounds/:id/comments", (req, res) => {
 //Auth Routes
 //==============
 
+
+//Sign Up Routes
 app.get("/register", (req, res) => {
    res.render("register");
 });
@@ -141,6 +143,26 @@ app.post("/register", (req, res) => {
 });
 
 
+//Login Routes
+
+app.get("/login", (req, res) => {
+   res.render("login");
+});
+
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failedRedirect: "/login"
+}), (req, res) => {
+});
+
+
+
+//Log out Route
+
+app.get("/logout", (req, res) => {
+   req.logout();
+   res.redirect("/");
+});
 
 app.get("*", (req, res) =>{
    console.log("Request was made for non defined route");
