@@ -31,9 +31,6 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-
-
-
 app.get("/", (req, res) =>{
     console.log("Request was made for the ROOT Route");
     res.render("landing");
@@ -122,6 +119,28 @@ app.post("/campgrounds/:id/comments", (req, res) => {
       }
    });
 });
+
+//==============
+//Auth Routes
+//==============
+
+app.get("/register", (req, res) => {
+   res.render("register");
+});
+
+app.post("/register", (req, res) => {
+   User.register(new User({username: req.body.username}), req.body.password, function (err, user){
+       if(err){
+           console.log(err);
+           return res.render("register");
+       }
+       passport.authenticate("local")(req, res, () => {
+          res.redirect("/campgrounds");
+       });
+   });
+});
+
+
 
 app.get("*", (req, res) =>{
    console.log("Request was made for non defined route");
