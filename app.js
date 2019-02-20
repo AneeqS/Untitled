@@ -1,15 +1,19 @@
-let express =  require("express"),
-    app = express(),
-    ejs =  require("ejs"),
-    bodyParser = require("body-parser"),
-    mongoose = require("mongoose"),
-    passport = require("passport"),
-    LocalStrategy = require("passport-local"),
-    port = 3000,
-    Campground = require("./models/campground"),
-    Comment = require("./models/comment"),
-    User = require("./models/user"),
-    seedDb = require("./seeds");
+let express             =  require("express"),
+    app                 = express(),
+    ejs                 =  require("ejs"),
+    bodyParser          = require("body-parser"),
+    mongoose            = require("mongoose"),
+    passport            = require("passport"),
+    LocalStrategy       = require("passport-local"),
+    port                = 3000,
+    Campground          = require("./models/campground"),
+    Comment             = require("./models/comment"),
+    User                = require("./models/user"),
+    seedDb              = require("./seeds");
+
+let commentRoutes = require("./routes/comments"),
+    restRoutes = require("./routes/rest"),
+    authRoutes = require("./routes/auth");
 
 mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
@@ -35,139 +39,10 @@ app.use((req, res, next) => {
    next();
 });
 
+app.use(authRoutes);
+app.use(restRoutes);
+app.use(commentRoutes);
 
-app.get("/", (req, res) =>{
-    console.log("Request was made for the ROOT Route");
-    res.render("landing");
-});
-
-
-//INDEX
-app.get("/campgrounds", (req, res) =>{
-    console.log("Request was made for the INDEX Route");
-
-    Campground.find({}, function(err, campgrounds){
-        if(err){
-            console.log(err);
-        }else{
-            res.render("campgrounds/index", {campgrounds: campgrounds});
-        }
-    });
-});
-
-//NEW
-app.get("/campgrounds/new", (req, res) =>{
-    console.log("Request was made for the NEW Route");
-    res.render("campgrounds/new");
-});
-
-//CREATE
-app.post("/campgrounds", (req, res) =>{
-    console.log("Request was made for the CREATE Route");
-    let newCamp = {
-        name: req.body.name,
-        image: req.body.image,
-        description: req.body.description
-    };
-    Campground.create(newCamp, function (err, campground){
-        if(err){
-            console.log(err);
-        }else {
-            res.redirect("/campgrounds");
-        }
-    });
-});
-
-//SHOW
-app.get("/campgrounds/:id", (req, res) => {
-
-    console.log("Request was made for the SHOW Route");
-    Campground.findById(req.params.id).populate("comments").exec(function (err, foundCamp){
-       if(err){
-           console.log(err);
-       }else {
-           console.log("Found");
-           res.render("campgrounds/show", {campground: foundCamp});
-       }
-    });
-});
-
-//Comment Routes
-
-app.get("/campgrounds/:id/comments/new", isLoggedIn,(req, res) => {
-
-    Campground.findById(req.params.id, function (err, campground) {
-       if(err){
-           console.log(err);
-       }else{
-           res.render("comments/new", {campground: campground});
-
-       }
-    });
-});
-
-app.post("/campgrounds/:id/comments", isLoggedIn, (req, res) => {
-   Campground.findById(req.params.id, function(err, campground){
-      if(err){
-          console.log(err);
-          res.redirect("/campgrounds");
-      }else{
-          Comment.create(req.body.comment, function (err, comment){
-              if(err){
-                  console.log(err);
-              }else{
-                  campground.comments.push(comment);
-                  campground.save();
-                  res.redirect("/campgrounds/" + campground._id);
-              }
-          });
-      }
-   });
-});
-
-//==============
-//Auth Routes
-//==============
-
-
-//Sign Up Routes
-app.get("/register", (req, res) => {
-   res.render("register");
-});
-
-app.post("/register", (req, res) => {
-   User.register(new User({username: req.body.username}), req.body.password, function (err, user){
-       if(err){
-           console.log(err);
-           return res.render("register");
-       }
-       passport.authenticate("local")(req, res, () => {
-          res.redirect("/campgrounds");
-       });
-   });
-});
-
-
-//Login Routes
-
-app.get("/login", (req, res) => {
-   res.render("login");
-});
-
-app.post("/login", passport.authenticate("local", {
-    successRedirect: "/campgrounds",
-    failedRedirect: "/login"
-}), (req, res) => {
-});
-
-
-
-//Log out Route
-
-app.get("/logout", (req, res) => {
-   req.logout();
-   res.redirect("/");
-});
 
 app.get("*", (req, res) =>{
    console.log("Request was made for non defined route");
@@ -179,16 +54,6 @@ app.get("*", (req, res) =>{
 app.listen(port, () =>{
    console.log("Server Started");
 });
-
-
-function isLoggedIn(req, res, next){
-
-    if(req.isAuthenticated()){
-        return next;
-    }
-    res.redirect("/login");
-
-};
 
 
 //Might need later
