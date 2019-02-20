@@ -16,19 +16,25 @@ router.get("/campgrounds", (req, res) =>{
 });
 
 //NEW
-router.get("/campgrounds/new", (req, res) =>{
+router.get("/campgrounds/new", isLoggedIn, (req, res) =>{
     console.log("Request was made for the NEW Route");
     res.render("campgrounds/new");
 });
 
 //CREATE
-router.post("/campgrounds", (req, res) =>{
+router.post("/campgrounds",isLoggedIn, (req, res) =>{
     console.log("Request was made for the CREATE Route");
+    let author = {
+        id: req.user._id,
+        username: req.user.username
+    };
     let newCamp = {
         name: req.body.name,
         image: req.body.image,
-        description: req.body.description
+        description: req.body.description,
+        author: author
     };
+
     Campground.create(newCamp, function (err, campground){
         if(err){
             console.log(err);
@@ -51,5 +57,16 @@ router.get("/campgrounds/:id", (req, res) => {
         }
     });
 });
+
+
+function isLoggedIn(req, res, next){
+
+    if(req.isAuthenticated()){
+        return next;
+    }
+    res.redirect("/login");
+
+};
+
 
 module.exports = router;
