@@ -19,7 +19,7 @@ mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
-seedDb();
+//seedDb();
 
 //Passport Config
 app.use(require("express-session")({
