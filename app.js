@@ -43,14 +43,6 @@ app.use(authRoutes);
 app.use(restRoutes);
 app.use(commentRoutes);
 
-
-app.get("*", (req, res) =>{
-   console.log("Request was made for non defined route");
-   res.sendStatus(404);
-});
-
-
-
 app.listen(port, () =>{
    console.log("Server Started");
 });
