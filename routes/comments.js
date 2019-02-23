@@ -1,8 +1,9 @@
 let express             = require("express"),
-    router              = express.Router(),
+    router              = express.Router({mergeParams: true}),
     Campground          = require("../models/campground"),
     Comment             = require("../models/comment");
 
+//NEW
 router.get("/new", isLoggedIn,(req, res) => {
 
     Campground.findById(req.params.id, function (err, campground) {
@@ -15,6 +16,7 @@ router.get("/new", isLoggedIn,(req, res) => {
     });
 });
 
+//CREATE
 router.post("/", isLoggedIn, (req, res) => {
     Campground.findById(req.params.id, function(err, campground){
         if(err){
@@ -36,6 +38,16 @@ router.post("/", isLoggedIn, (req, res) => {
         }
     });
 });
+
+//EDIT
+
+router.get("/:commentId/edit", (req, res) => {
+    res.send("Comment edit route");
+});
+
+//UPDATE
+
+//DELETE
 
 function isLoggedIn(req, res, next){
 
