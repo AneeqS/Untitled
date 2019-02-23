@@ -1,9 +1,10 @@
 let express             = require("express"),
     router              = express.Router(),
+    expressSanitizer    = require("express-sanitizer"),
     Campground          = require("../models/campground");
 
 //INDEX
-router.get("/campgrounds", (req, res) =>{
+router.get("/", (req, res) =>{
     console.log("Request was made for the INDEX Route");
 
     Campground.find({}, function(err, campgrounds){
@@ -15,14 +16,8 @@ router.get("/campgrounds", (req, res) =>{
     });
 });
 
-//NEW
-router.get("/campgrounds/new", isLoggedIn, (req, res) =>{
-    console.log("Request was made for the NEW Route");
-    res.render("campgrounds/new");
-});
-
 //CREATE
-router.post("/campgrounds",isLoggedIn, (req, res) =>{
+router.post("/",isLoggedIn, (req, res) => {
     console.log("Request was made for the CREATE Route");
     let author = {
         id: req.user._id,
@@ -44,8 +39,14 @@ router.post("/campgrounds",isLoggedIn, (req, res) =>{
     });
 });
 
+//NEW
+router.get("/new", isLoggedIn, (req, res) => {
+    console.log("Request was made for the NEW Route");
+    res.render("campgrounds/new");
+});
+
 //SHOW
-router.get("/campgrounds/:id", (req, res) => {
+router.get("/:id", (req, res) => {
 
     console.log("Request was made for the SHOW Route");
     Campground.findById(req.params.id).populate("comments").exec(function (err, foundCamp){
@@ -59,10 +60,38 @@ router.get("/campgrounds/:id", (req, res) => {
 });
 
 
+//Edit
+router.get("/:id/edit", (req, res) => {
+
+    console.log("Request Made for the EDIT Route");
+    Campground.findById(req.params.id, function (err, foundCamp){
+       if(err){
+           res.redirect("/campgrounds");
+       }else{
+           res.render("campgrounds/edit", {campground: foundCamp});
+       }
+    });
+});
+
+//Update
+router.put("/:id", (req, res) => {
+
+    req.body.campground.body = req.sanitize(req.body.campground.body);
+    Campground.findByIdAndUpdate(req.params.id, req.body.campground, function (err, updatedCamp){
+
+        if(err){
+            res.redirect("/campgrounds");
+        }else{
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+});
+
+
 function isLoggedIn(req, res, next){
 
     if(req.isAuthenticated()){
-        return next;
+        return next();
     }
     res.redirect("/login");
 

@@ -1,11 +1,12 @@
-let express             =  require("express"),
+let express             = require("express"),
     app                 = express(),
-    ejs                 =  require("ejs"),
+    ejs                 = require("ejs"),
     bodyParser          = require("body-parser"),
     mongoose            = require("mongoose"),
     passport            = require("passport"),
     LocalStrategy       = require("passport-local"),
     methodOverride      = require("method-override"),
+    expressSanitizer    = require("express-sanitizer"),
     port                = 3000,
     Campground          = require("./models/campground"),
     Comment             = require("./models/comment"),
@@ -18,9 +19,10 @@ let commentRoutes = require("./routes/comments"),
 
 mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(expressSanitizer());
 //seedDb();
 
 //Passport Config
@@ -41,9 +43,9 @@ app.use((req, res, next) => {
    next();
 });
 
-app.use(authRoutes);
-app.use(restRoutes);
-app.use(commentRoutes);
+app.use("/", authRoutes);
+app.use("/campgrounds", restRoutes);
+app.use("/campgrounds/:id/comments", commentRoutes);
 
 app.listen(port, () =>{
    console.log("Server Started");

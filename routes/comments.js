@@ -3,7 +3,7 @@ let express             = require("express"),
     Campground          = require("../models/campground"),
     Comment             = require("../models/comment");
 
-router.get("/campgrounds/:id/comments/new", isLoggedIn,(req, res) => {
+router.get("/new", isLoggedIn,(req, res) => {
 
     Campground.findById(req.params.id, function (err, campground) {
         if(err){
@@ -15,7 +15,7 @@ router.get("/campgrounds/:id/comments/new", isLoggedIn,(req, res) => {
     });
 });
 
-router.post("/campgrounds/:id/comments", isLoggedIn, (req, res) => {
+router.post("/", isLoggedIn, (req, res) => {
     Campground.findById(req.params.id, function(err, campground){
         if(err){
             console.log(err);
