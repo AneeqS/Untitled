@@ -76,6 +76,7 @@ router.get("/:id/edit", (req, res) => {
 //Update
 router.put("/:id", (req, res) => {
 
+    console.log("Request Made for the UPDATE Route");
     req.body.campground.body = req.sanitize(req.body.campground.body);
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function (err, updatedCamp){
 
@@ -87,6 +88,18 @@ router.put("/:id", (req, res) => {
     });
 });
 
+//Delete
+router.delete("/:id", (req, res) => {
+
+    console.log("Request Made for the DELETE Route");
+    Campground.findByIdAndRemove(req.params.id, function (err){
+        if(err){
+            res.redirect("/campgrounds");
+        }else{
+            res.redirect("/campgrounds");
+        }
+    });
+});
 
 function isLoggedIn(req, res, next){
 
