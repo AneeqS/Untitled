@@ -5,6 +5,7 @@ let express             =  require("express"),
     mongoose            = require("mongoose"),
     passport            = require("passport"),
     LocalStrategy       = require("passport-local"),
+    methodOverride      = require("method-override"),
     port                = 3000,
     Campground          = require("./models/campground"),
     Comment             = require("./models/comment"),
@@ -19,6 +20,7 @@ mongoose.connect("mongodb://localhost:27017/untitled", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
 //seedDb();
 
 //Passport Config
