@@ -6,6 +6,7 @@ let express             = require("express"),
     passport            = require("passport"),
     LocalStrategy       = require("passport-local"),
     methodOverride      = require("method-override"),
+    flash               = require("connect-flash"),
     expressSanitizer    = require("express-sanitizer"),
     port                = 3000,
     Campground          = require("./models/campground"),
@@ -23,6 +24,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
+app.use(flash());
 //seedDb();
 
 //Passport Config
