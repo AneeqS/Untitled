@@ -13,3 +13,8 @@
 .delete{
     display: inline;
 }
+
+.alert {
+    width:70%;
+    height:10px;
+}
